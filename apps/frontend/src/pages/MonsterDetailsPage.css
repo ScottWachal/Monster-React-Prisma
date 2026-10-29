@@ -1,0 +1,32 @@
+.monster-details {
+  margin-top: 2rem;
+  padding: 2rem;
+
+  background: #111;
+  border: 3px solid #39ff14;
+  border-radius: 12px;
+}
+
+.monster-details h1 {
+  margin-top: 0;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.monster-details dl {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0.75rem 1rem;
+
+  margin: 2rem 0;
+}
+
+.monster-details dt {
+  color: white;
+  text-transform: uppercase;
+}
+
+.monster-details dd {
+  margin: 0;
+}
