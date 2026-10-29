@@ -1,0 +1,13 @@
+{
+  "name": "monsters-project",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w @monsters/frontend\" \"npm run dev -w @monsters/backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
