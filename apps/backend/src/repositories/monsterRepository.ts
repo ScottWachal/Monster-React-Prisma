@@ -1,49 +1,65 @@
-import { sampleMonsters } from "../data/sampleMonsters";
+import { prisma } from "../db/prisma";
+
 import type {
-  CreateMonsterInput,
   Monster,
+  CreateMonsterInput
 } from "../types/Monster";
 
-let monsters: Monster[] = sampleMonsters.map((monster) => ({
-  ...monster,
-}));
+// Convert a database record to our application's Monster type.
+type DbMonster = {
+  id: number;
+  name: string;
+  hitPoints: number;
+  level: number;
+  description: string | null;
+};
 
-let nextId =
-  Math.max(...monsters.map((monster) => monster.id), 0) + 1;
+// this function converts a database record to our application's Monster type
+// it handles the case where the description is null in the database
+// and converts it to undefined in our application's Monster type 
+// this is important because our application's Monster type has an optional description field, while the database record has a nullable description field
+function toMonster(row: DbMonster): Monster {
+  return {
+    id: row.id,
+    name: row.name,
+    hitPoints: row.hitPoints,
+    level: row.level,
+    ...(row.description === null
+      ? {}
+      : { description: row.description })
+  };
+}
 
 export const monsterRepository = {
   async getAll(): Promise<Monster[]> {
-    return monsters.map((monster) => ({
-      ...monster,
-    }));
+    const monsters = await prisma.monster.findMany({
+      orderBy: { id: "asc" }
+    });
+
+    return monsters.map(toMonster);
   },
 
   async getById(id: number): Promise<Monster | null> {
-    const monster = monsters.find(
-      (monster) => monster.id === id,
-    );
+    const monster = await prisma.monster.findUnique({
+      where: { id }
+    });
 
-    return monster ? { ...monster } : null;
+    return monster ? toMonster(monster) : null;
   },
 
   async add(input: CreateMonsterInput): Promise<Monster> {
-    const monster: Monster = {
-      id: nextId++,
-      ...input,
-    };
+    const monster = await prisma.monster.create({
+      data: input
+    });
 
-    monsters = [...monsters, monster];
-
-    return { ...monster };
+    return toMonster(monster);
   },
 
   async remove(id: number): Promise<boolean> {
-    const originalLength = monsters.length;
+    const result = await prisma.monster.deleteMany({
+      where: { id }
+    });
 
-    monsters = monsters.filter(
-      (monster) => monster.id !== id,
-    );
-
-    return monsters.length < originalLength;
-  },
+    return result.count > 0;
+  }
 };
