@@ -9,10 +9,12 @@ lerna-debug.log*
 
 node_modules/
 dist/
-.env
-.env.local
 dist-ssr
 *.local
+
+# Keep environment variables out of version control
+.env
+.env.local
 
 .postman/
 postman/
@@ -27,3 +29,11 @@ postman/
 *.njsproj
 *.sln
 *.sw?
+
+# AI coding assistants
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
+
+/generated/prisma

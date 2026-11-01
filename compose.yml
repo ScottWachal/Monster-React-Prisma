@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: monsters
+      POSTGRES_PASSWORD: monsters_dev_only
+      POSTGRES_DB: monsters
+    ports:
+      - "5433:5432"
+    volumes:
+      - monsters_data:/var/lib/postgresql/data
+
+volumes:
+  monsters_data:
