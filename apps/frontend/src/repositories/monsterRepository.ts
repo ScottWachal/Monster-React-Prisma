@@ -1,49 +1,58 @@
-import { sampleMonsters } from "../data/sampleMonsters";
 import type {
-  CreateMonsterInput,
   Monster,
+  CreateMonsterInput
 } from "../types/Monster";
 
-let monsters: Monster[] = sampleMonsters.map((monster) => ({
-  ...monster,
-}));
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const endpoint = `${baseUrl}/api/monsters`;
 
-let nextId =
-  Math.max(...monsters.map((monster) => monster.id), 0) + 1;
+async function readJson<T>(
+  response: Response
+): Promise<T> {
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  return (await response.json()) as T;
+}
 
 export const monsterRepository = {
   async getAll(): Promise<Monster[]> {
-    return monsters.map((monster) => ({
-      ...monster,
-    }));
+    const response = await fetch(endpoint);
+    return readJson<Monster[]>(response);
   },
 
   async getById(id: number): Promise<Monster | null> {
-    const monster = monsters.find(
-      (monster) => monster.id === id,
-    );
+    const response = await fetch(`${endpoint}/${id}`);
 
-    return monster ? { ...monster } : null;
+    if (response.status === 404) return null;
+
+    return readJson<Monster>(response);
   },
 
   async add(input: CreateMonsterInput): Promise<Monster> {
-    const monster: Monster = {
-      id: nextId++,
-      ...input,
-    };
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(input)
+    });
 
-    monsters = [...monsters, monster];
-
-    return { ...monster };
+    return readJson<Monster>(response);
   },
 
   async remove(id: number): Promise<boolean> {
-    const originalLength = monsters.length;
+    const response = await fetch(`${endpoint}/${id}`, {
+      method: "DELETE"
+    });
 
-    monsters = monsters.filter(
-      (monster) => monster.id !== id,
-    );
+    if (response.status === 404) return false;
 
-    return monsters.length < originalLength;
-  },
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    return true;
+  }
 };
