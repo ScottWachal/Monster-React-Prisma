@@ -36,4 +36,4 @@ postman/
 .windsurf/
 skills-lock.json
 
-/generated/prisma
+apps/backend/generated/
