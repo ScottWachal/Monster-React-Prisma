@@ -19,4 +19,23 @@ model Monster {
   hitPoints   Int
   level       Int
   description String?
+  abilities MonsterAbility[]
+}
+
+model Ability {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+
+  monsters MonsterAbility[]
+}
+
+model MonsterAbility {
+  monsterId Int
+  abilityId Int
+
+  monster Monster @relation(fields: [monsterId], references: [id])
+  ability Ability @relation(fields: [abilityId], references: [id])
+
+  @@id([monsterId, abilityId])
 }
