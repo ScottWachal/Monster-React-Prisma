@@ -1,3 +1,4 @@
+
 import { prisma } from "../db/prisma";
 
 import type {
@@ -5,35 +6,58 @@ import type {
   CreateMonsterInput
 } from "../types/Monster";
 
-// Convert a database record to our application's Monster type.
+// Include abilities whenever we retrieve a monster.
+const withAbilities = {
+  abilities: {
+    include: {
+      ability: true
+    }
+  }
+} as const;
+
+// Represents a Prisma monster record with its relationships.
 type DbMonster = {
   id: number;
   name: string;
   hitPoints: number;
   level: number;
   description: string | null;
+  abilities: {
+    ability: {
+      id: number;
+      name: string;
+      description: string | null;
+    };
+  }[];
 };
 
-// this function converts a database record to our application's Monster type
-// it handles the case where the description is null in the database
-// and converts it to undefined in our application's Monster type 
-// this is important because our application's Monster type has an optional description field, while the database record has a nullable description field
+// Convert a database monster into our shared application type.
 function toMonster(row: DbMonster): Monster {
   return {
     id: row.id,
     name: row.name,
     hitPoints: row.hitPoints,
     level: row.level,
-    ...(row.description === null
-      ? {}
-      : { description: row.description })
+
+    ...(row.description !== null
+      ? { description: row.description }
+      : {}),
+
+    abilities: row.abilities.map((entry) => ({
+      id: entry.ability.id,
+      name: entry.ability.name,
+      ...(entry.ability.description !== null
+        ? { description: entry.ability.description }
+        : {})
+    }))
   };
 }
 
 export const monsterRepository = {
   async getAll(): Promise<Monster[]> {
     const monsters = await prisma.monster.findMany({
-      orderBy: { id: "asc" }
+      orderBy: { id: "asc" },
+      include: withAbilities
     });
 
     return monsters.map(toMonster);
@@ -41,7 +65,8 @@ export const monsterRepository = {
 
   async getById(id: number): Promise<Monster | null> {
     const monster = await prisma.monster.findUnique({
-      where: { id }
+      where: { id },
+      include: withAbilities
     });
 
     return monster ? toMonster(monster) : null;
@@ -49,15 +74,28 @@ export const monsterRepository = {
 
   async add(input: CreateMonsterInput): Promise<Monster> {
     const monster = await prisma.monster.create({
-      data: input
+      data: {
+        name: input.name,
+        level: input.level,
+        hitPoints: input.hitPoints,
+        description: input.description
+      },
+      include: withAbilities
     });
 
     return toMonster(monster);
   },
 
   async remove(id: number): Promise<boolean> {
-    const result = await prisma.monster.deleteMany({
-      where: { id }
+    const result = await prisma.$transaction(async (tx) => {
+      // Remove relationships before deleting the monster.
+      await tx.monsterAbility.deleteMany({
+        where: { monsterId: id }
+      });
+
+      return tx.monster.deleteMany({
+        where: { id }
+      });
     });
 
     return result.count > 0;

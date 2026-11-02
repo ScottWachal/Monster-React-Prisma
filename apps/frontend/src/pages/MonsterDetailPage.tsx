@@ -67,7 +67,22 @@ export function MonsterDetailsPage() {
             "No description provided."}
         </dd>
       </dl>
+      <h2>Abilities</h2>
 
+      {monster.abilities.length === 0 ? (
+        <p>This monster has no abilities.</p>
+      ) : (
+        <ul>
+          {monster.abilities.map((ability) => (
+            <li key={ability.id}>
+              <strong>{ability.name}</strong>
+              {ability.description && (
+                <p>{ability.description}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
       <button
         type="button"
         onClick={() => {
