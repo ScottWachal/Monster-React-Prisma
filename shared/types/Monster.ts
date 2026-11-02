@@ -14,4 +14,6 @@ export interface Monster {
 }
 
 export type CreateMonsterInput =
-  Omit<Monster, "id" | "abilities">;
+  Omit<Monster, "id" | "abilities"> & {
+    abilityIds: number[];
+  };

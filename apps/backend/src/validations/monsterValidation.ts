@@ -5,7 +5,15 @@ const createMonsterSchema = z.object({
   name: z.string().trim().min(2),
   level: z.number().int().min(1).max(20),
   hitPoints: z.number().int().nonnegative(),
-  description: z.string().trim().optional()
+  description: z.string().trim().optional(),
+  abilityIds: z
+  .array(z.number().int().positive())
+  .max(3, "A monster can have at most 3 abilities.")
+  .refine(
+    (ids) => new Set(ids).size === ids.length,
+    "Duplicate abilities are not allowed."
+  )
+  .default([])
 }).strict().refine(
   (monster) => monster.hitPoints >= monster.level * 5,
   {

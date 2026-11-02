@@ -72,13 +72,27 @@ export const monsterRepository = {
     return monster ? toMonster(monster) : null;
   },
 
+  // Prisma is doing three things:
+  // 1. Creating a new record in Monster.
+  // 2. Creating a MonsterAbility record for each selected ability.
+  // 3. Connecting those records to existing Ability records using their IDs.
+  // Prisma performs this nested write atomically. If one relationship cannot be created, the whole operation rolls back rather than leaving a partially created monster.
+  // The include option ensures that the newly created monster is returned with its abilities.
   async add(input: CreateMonsterInput): Promise<Monster> {
     const monster = await prisma.monster.create({
       data: {
         name: input.name,
         level: input.level,
         hitPoints: input.hitPoints,
-        description: input.description
+        description: input.description,
+
+        abilities: {
+          create: input.abilityIds.map((abilityId) => ({
+            ability: {
+              connect: { id: abilityId }
+            }
+          }))
+        }
       },
       include: withAbilities
     });

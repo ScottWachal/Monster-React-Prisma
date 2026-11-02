@@ -8,6 +8,8 @@ import type {
 } from "express";
 
 import { monsterRoutes } from "./routes/monsterRoutes";
+import abilityRoutes from "./routes/abilityRoutes";
+
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.use(cors({ origin: frontendUrl }));
 app.use(express.json());
 
 app.use("/api/monsters", monsterRoutes);
+app.use("/api/abilities", abilityRoutes);
 
 // Central error handler
 app.use((

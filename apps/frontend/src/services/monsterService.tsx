@@ -42,6 +42,25 @@ function validateMonster(input: CreateMonsterInput): void {
     );
   }
 
+  if (input.abilityIds.length > 3) {
+    errors.push("A monster can have at most 3 abilities.");
+  }
+
+  if (
+    input.abilityIds.some(
+      (id) => !Number.isInteger(id) || id < 1
+    )
+  ) {
+    errors.push("Invalid ability ID.");
+  }
+
+  if (
+    new Set(input.abilityIds).size !==
+    input.abilityIds.length
+  ) {
+    errors.push("Abilities cannot be selected twice.");
+  }
+
   if (errors.length > 0) {
     throw new Error(errors.join(" "));
   }
