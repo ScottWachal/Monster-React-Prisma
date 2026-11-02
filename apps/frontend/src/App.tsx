@@ -4,6 +4,7 @@ import {
   Routes,
 } from "react-router";
 import { AppLayout } from "./layouts/AppLayout";
+import { AbilityListPage } from "./pages/AbilityListPage";
 import { MonsterListPage } from "./pages/MonsterListPage";
 import { MonsterDetailsPage } from "./pages/MonsterDetailPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
@@ -18,6 +19,11 @@ export default function App() {
         <Route
           path="monsters"
           element={<MonsterListPage />}
+        />
+
+        <Route
+          path="abilities"
+          element={<AbilityListPage />}
         />
 
         <Route

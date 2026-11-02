@@ -13,6 +13,9 @@ export function AppLayout() {
           <NavLink to="/monsters">
             Monsters
           </NavLink>
+          <NavLink to="/abilities">
+            Abilities
+          </NavLink>
         </nav>
       </header>
 

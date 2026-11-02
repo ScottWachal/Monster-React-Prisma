@@ -1,0 +1,68 @@
+
+[
+  {
+    "id": 1,
+    "name": "Quick Strike",
+    "description": "A fast attack that is difficult to avoid."
+  },
+  {
+    "id": 2,
+    "name": "Crushing Blow",
+    "description": "A powerful physical attack that deals heavy damage."
+  },
+  {
+    "id": 3,
+    "name": "Frost Breath",
+    "description": "Exhales freezing air that damages and slows enemies."
+  },
+  {
+    "id": 4,
+    "name": "Flight",
+    "description": "Allows the creature to travel through the air."
+  },
+  {
+    "id": 5,
+    "name": "Venomous Bite",
+    "description": "A bite that poisons the target."
+  },
+  {
+    "id": 6,
+    "name": "Web Trap",
+    "description": "Creates sticky webs that restrain enemies."
+  },
+  {
+    "id": 7,
+    "name": "Shield Bash",
+    "description": "Strikes an enemy with a shield."
+  },
+  {
+    "id": 8,
+    "name": "Life Drain",
+    "description": "Steals vitality from a target."
+  },
+  {
+    "id": 9,
+    "name": "Stone Skin",
+    "description": "Hardens the creature's body to resist damage."
+  },
+  {
+    "id": 10,
+    "name": "Fireball",
+    "description": "Launches a ball of flame at an enemy."
+  },
+  {
+    "id": 11,
+    "name": "Shadow Step",
+    "description": "Allows the creature to move quickly through shadows."
+  },
+  {
+    "id": 12,
+    "name": "Regeneration",
+    "description": "Gradually restores lost hit points."
+  },
+  {
+    "id": 13,
+    "name": "Lightning Strike",
+    "description": "Unleashes a powerful electrical attack."
+  }
+]

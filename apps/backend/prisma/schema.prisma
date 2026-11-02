@@ -35,7 +35,7 @@ model MonsterAbility {
   abilityId Int
 
   monster Monster @relation(fields: [monsterId], references: [id])
-  ability Ability @relation(fields: [abilityId], references: [id])
+  ability Ability @relation(fields: [abilityId], references: [id], onDelete: Restrict)
 
   @@id([monsterId, abilityId])
 }

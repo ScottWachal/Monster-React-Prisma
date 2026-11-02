@@ -1,5 +1,6 @@
 export type {
   Monster,
   CreateMonsterInput,
-  Ability
+  Ability,
+  AbilityInput
 } from "../../../../shared/types/Monster";

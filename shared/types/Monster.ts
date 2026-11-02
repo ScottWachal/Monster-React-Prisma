@@ -4,6 +4,11 @@ export interface Ability {
   description?: string;
 }
 
+export interface AbilityInput {
+  name: string;
+  description?: string;
+}
+
 export interface Monster {
   id: number;
   name: string;

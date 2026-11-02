@@ -1,0 +1,44 @@
+.ability-admin {
+  max-width: 850px;
+}
+
+.ability-admin form {
+  display: grid;
+  gap: 1rem;
+}
+
+.ability-admin form > div:not(.ability-actions) {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ability-admin input,
+.ability-admin textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  font: inherit;
+}
+
+.add-ability-form {
+  margin-bottom: 2rem;
+}
+
+.ability-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.ability-row {
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.ability-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
